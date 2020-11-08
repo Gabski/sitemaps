@@ -1,0 +1,20 @@
+{
+    "name": "gabski/sitemaps",
+    "keywords": ["sitemap, sitemaps"],
+    "homepage": "https://github.com/Gabski/sitemaps",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gabriel Koziestański",
+            "email": "gabriel@makememmore.eu"
+        }
+    ],
+    "require": {
+        "php": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sitemap\\": "src/"
+        }
+    }
+}
