@@ -4,9 +4,8 @@ namespace Sitemap;
 
 use XMLWriter;
 
-class SitemapsList
+class SitemapsList extends AbstractSiteMap
 {
-    private $nodes;
     private $baseUrl;
 
     const FILE_NAME = 'sitemap';
@@ -25,9 +24,9 @@ class SitemapsList
         ];
     }
 
-    public function generate($path = './')
+    public function generate($path = './', $baseFileName = self::FILE_NAME)
     {
-        $this->generateSitemapsList(self::FILE_NAME, $this->nodes, $path);
+        $this->generateSitemapsList($baseFileName, $this->nodes, $path);
     }
 
     public function generateSitemapsList($name, $items, $path = './')

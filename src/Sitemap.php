@@ -4,13 +4,11 @@ namespace Sitemap;
 
 use XMLWriter;
 
-class Sitemap
+class Sitemap extends AbstractSiteMap
 {
-    private $nodes;
     private $baseUrl;
     const ITEM_PER_SITEMAP = 10000;
     const FILE_NAME        = 'sitemap';
-    const EXT              = '.xml';
 
     public function __construct($baseUrl)
     {
@@ -29,16 +27,16 @@ class Sitemap
         ];
     }
 
-    public function generate($path = './')
+    public function generate($path = './', $baseFileName = self::FILE_NAME)
     {
         $sitemapsList = new SitemapsList($this->baseUrl);
-        $itemsByPage = self::ITEM_PER_SITEMAP;
-        $pages       = ceil(count($this->nodes) / $itemsByPage);
+        $itemsByPage  = self::ITEM_PER_SITEMAP;
+        $pages        = ceil(count($this->nodes) / $itemsByPage);
 
         for ($i = 0; $i < $pages; $i++) {
             $offset     = $i * $itemsByPage;
             $slicedData = array_slice($this->nodes, $offset, $itemsByPage);
-            $fileName   = self::FILE_NAME . '-' . ($i + 1) . self::EXT;
+            $fileName   = $baseFileName . '-' . ($i + 1) . self::EXT;
             $this->generateSingleSitemap($fileName, $slicedData, $path);
             $sitemapsList->addItem($fileName);
         }
@@ -60,11 +58,7 @@ class Sitemap
             'http://www.sitemaps.org/schemas/sitemap/0.9             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd');
 
         foreach ($items as $index => $item) {
-            $xml->startElement('url');
-            foreach ($item as $key => $value) {
-                $xml->writeElement($key, $value);
-            }
-            $xml->endElement();
+            $this->writeNewElement($xml, 'url', $item);
         }
 
         $xml->endElement();
